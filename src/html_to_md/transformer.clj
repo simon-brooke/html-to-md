@@ -26,26 +26,35 @@
             (if processor
                 (apply processor (list element dispatcher))
                 (map #(process % dispatcher) (:content element))))
-        (string? element) element))
+
+        (string? element) element
+        (or (seq? element) (vector? element))
+        (map #(process % dispatcher) element)))
+
+(defn- transformer-dispatch
+    [a _]
+    (class a))
 
 (defmulti transform
     "Transform the `obj` which is my first argument using the `dispatcher`
     which is my second argument."
-    [class class] :default :default)
+    #'transformer-dispatch
+     :default :default)
 
 (defmethod transform :default [obj dispatcher]
     (process obj dispatcher))
 
-(defmethod transform [java.net.URI Object] [uri dispatcher]
+(defmethod transform java.net.URI [uri dispatcher]
     (process (html/html-resource uri) dispatcher))
 
-(defmethod transform [java.net.URL Object] [url dispatcher]
+(defmethod transform java.net.URL [url dispatcher]
     (transform (.toURI url) dispatcher))
 
-(defmethod transform [String Object] [s dispatcher]
+(defmethod transform String [s dispatcher]
     (let [url (try (java.net.URL. s) (catch Exception any))]
         (if url (transform url dispatcher)
             ;; otherwise, if s is not a URL, consider it as an HTML fragment,
             ;; parse and process it
             (process (tagsoup/parser (java.io.StringReader s)) dispatcher)
             )))
+
