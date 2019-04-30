@@ -1,7 +1,7 @@
 (ns html-to-md.html-to-md-test
     (:require [clojure.test :refer :all]
               [html-to-md.transformer :refer [process]]
-              [html-to-md.html-to-md :refer :all]))
+              [html-to-md.html-to-md :refer [markdown-dispatcher]]))
 
 (deftest a-test
     (testing "Anchor tag."

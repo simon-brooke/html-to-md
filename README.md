@@ -10,9 +10,55 @@ The itch I'm trying to scratch at present is to transform
 but my architecture for doing this is to build a completely general [HT|SG|X]ML
 transformation framework and then specialise it.
 
+**WARNING:** this is presently alpha-quality code, although it does have fair
+unit test coverage.
+
 ## Usage
 
-FIXME
+To use this library in your project, add the following leiningen dependency:
+
+    [org.clojars.simon_brooke/html-to-md "0.1.0"]
+
+To use it in your namespace, require:
+
+    [html-to-md/transformer :refer [transform process]]
+    [html-to-md/html-to-md :refer [markdown-dispatcher]]
+
+The intended usage is as follows:
+
+```clojure
+(require '[html-to-md.transformer :refer [transform]])
+(require '[html-to-md.html-to-md :refer [markdown-dispatcher]])
+
+(transform URL markdown-dispatcher)
+```
+
+Where URL is any URL that references an HTML, SGML, XHTML or XML document.
+However, my fancy multi-method doesn't work yet and may well be the wrong
+approach, so for now use
+
+```clojure
+
+(require '[html-to-md.transformer :refer [process]])
+(require '[html-to-md.html-to-md :refer [markdown-dispatcher]])
+(require '[net.cgrand.enlive-html :as html])
+
+(process (html/html-resource URL) markdown-dispatcher)
+```
+
+## Extending the transformer
+
+In principle, the transformer can transform any [HT|SG|X]ML markup into any
+other, or into any textual form. To extend it to do something other than
+markdown, supply a **dispatcher**. A dispatcher is essentially a function of one
+argument, a [HT|SG|X]ML tag represented as a Clojure keyword, which returns
+a **processor,** which should be a function of two arguments, an element assumed
+to have that tag, and a dispatcher. The processor should return the value that
+you want elements of that tag transformed into.
+
+Obviously it is convenient to write dispatchers as maps, but it isn't required
+that you do so: anything which, given a keyword, will return a processor, will
+work.
 
 ## License
 
