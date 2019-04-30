@@ -1,3 +1,4 @@
+/html-to-md
 /target
 /classes
 /checkouts
@@ -9,3 +10,4 @@ pom.xml.asc
 /.nrepl-port
 .hgignore
 .hg/
+*~

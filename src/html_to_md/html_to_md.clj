@@ -17,14 +17,19 @@
                 (-> e :attrs :href)
                 ")"))))
 
-(defn markdown-strong
-    "Process the strong emphasis element `e` into markdown, using dispatcher
-    `d`."
+(defn markdown-code
+    "Process the code or samp `e` into markdown, using dispatcher `d`."
     [e d]
     (str
-        "**"
+        "`"
         (s/trim (apply str (map #(process % d) (:content e))))
-        "**"))
+        "`"))
+
+(defn markdown-default
+    "Process an element `e` for which we have no other function into markdown,
+    using dispatcher `d`."
+    [e d]
+    (apply str (map #(process % d) (:content e))))
 
 (defn markdown-div
     "Process the division element `e` into markdown, using dispatcher `d`."
@@ -95,7 +100,7 @@
 (defn markdown-html
     "Process this HTML element `e` into markdown, using dispatcher `d`."
     [e d]
-    (apply str (process (html/select e [:body]) d) ))
+    (apply str (process (first (html/select e [:body])) d) ))
 
 (defn markdown-img
     "Process this image element `e` into markdown, using dispatcher `d`."
@@ -119,6 +124,24 @@
                        (range))))
         "\n\n"))
 
+(defn markdown-pre
+    "Process the preformatted emphasis element `e` into markdown, using
+    dispatcher `d`."
+    [e d]
+    (str
+        "\n```\n"
+        (s/trim (apply str (map #(process % d) (:content e))))
+        "\n```\n"))
+
+(defn markdown-strong
+    "Process the strong emphasis element `e` into markdown, using dispatcher
+    `d`."
+    [e d]
+    (str
+        "**"
+        (s/trim (apply str (map #(process % d) (:content e))))
+        "**"))
+
 (defn markdown-ul
     "Process this unordered list element `e` into markdown, using dispatcher
     `d`."
@@ -139,6 +162,8 @@
 (def markdown-dispatcher
     {:a markdown-a
      :b markdown-strong
+     :code markdown-code
+     :body markdown-default
      :div markdown-div
      :em markdown-em
      :h1 markdown-h1
@@ -151,6 +176,10 @@
      :i markdown-em
      :img markdown-img
      :ol markdown-ol
+     :p markdown-div
+     :pre markdown-pre
+     :samp markdown-code
+     :span markdown-default
      :strong markdown-strong
      :ul markdown-ul
      })
