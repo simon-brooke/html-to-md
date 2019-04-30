@@ -1,6 +1,7 @@
 # html-to-md
 
-A Clojure library designed to convert (Enlivened) HTML to markdown; but, more
+A Clojure library designed to convert
+([Enlive](https://github.com/cgrand/enlive)ned) HTML to markdown; but, more
 generally, a framework for [HT|SG|X]ML transformation.
 
 ## Introduction
@@ -17,34 +18,49 @@ unit test coverage.
 
 To use this library in your project, add the following leiningen dependency:
 
-    [org.clojars.simon_brooke/html-to-md "0.1.0"]
+    [org.clojars.simon_brooke/html-to-md "0.2.0"]
 
 To use it in your namespace, require:
 
-    [html-to-md/transformer :refer [transform process]]
-    [html-to-md/html-to-md :refer [markdown-dispatcher]]
+    [html-to-md.core :refer [html-to-md]]
+
+For default usage, that's all you need. To play more sophisticated tricks,
+consider:
+
+    [html-to-md.transformer :refer [transform process]]
+    [html-to-md.html-to-md :refer [markdown-dispatcher]]
 
 The intended usage is as follows:
 
 ```clojure
-(require '[html-to-md.transformer :refer [transform]])
-(require '[html-to-md.html-to-md :refer [markdown-dispatcher]])
+(require '[html-to-md.core :refer [html-to-md]])
 
-(transform URL markdown-dispatcher)
+(html-to-md url output-file)
 ```
 
-Where URL is any URL that references an HTML, SGML, XHTML or XML document.
-However, my fancy multi-method doesn't work yet and may well be the wrong
-approach, so for now use
+This will read (X)HTML from `url` and write Markdown to `output-file`. If
+`output-file` is not supplied, it will return the markdown as a string:
 
 ```clojure
+(require '[html-to-md.core :refer [html-to-md]])
 
-(require '[html-to-md.transformer :refer [process]])
-(require '[html-to-md.html-to-md :refer [markdown-dispatcher]])
-(require '[net.cgrand.enlive-html :as html])
-
-(process (html/html-resource URL) markdown-dispatcher)
+(def md (html-to-md url))
 ```
+
+If you are specifically scraping [blogger.com](https://www.blogger.com/")
+pages, you may *try* the following recipe:
+
+```clojure
+(require '[html-to-md.core :refer [blogger-to-md]])
+
+(blogger-to-md url output-file)
+```
+
+It works for my blogger pages. However, I'm not sure to what extent the
+skinning of blogger pages is pure CSS (in which case my recipe should work
+for yours) and to what extent it's HTML templating (in which case it
+probably won't). Results not guaranteed, if it doesn't work you get to
+keep all the pieces.
 
 ## Extending the transformer
 
@@ -66,3 +82,4 @@ Copyright © 2019 Simon Brooke <simon@journeyman.cc>
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
+

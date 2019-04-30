@@ -73,7 +73,7 @@
 
 (deftest img-test
     (testing "Image tag."
-        (let [expected "![Hello dere!](http://foo.bar/image.png)"
+        (let [expected "![image: Hello dere!](http://foo.bar/image.png)"
               actual (process
                          {:tag :img
                           :attrs {:src "http://foo.bar/image.png"
