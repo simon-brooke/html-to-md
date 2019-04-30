@@ -18,7 +18,7 @@ unit test coverage.
 
 To use this library in your project, add the following leiningen dependency:
 
-    [org.clojars.simon_brooke/html-to-md "0.1.0"]
+    [org.clojars.simon_brooke/html-to-md "0.2.0"]
 
 To use it in your namespace, require:
 
