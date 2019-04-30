@@ -29,7 +29,7 @@
 
         (string? element) element
         (or (seq? element) (vector? element))
-        (doall (map #(process % dispatcher) element))))
+        (remove nil? (map #(process % dispatcher) element))))
 
 (defn- transformer-dispatch
     [a _]
@@ -45,7 +45,7 @@
     (process obj dispatcher))
 
 (defmethod transform java.net.URI [uri dispatcher]
-    (process (html/html-resource uri) dispatcher))
+    (remove nil? (process (html/html-resource uri) dispatcher)))
 
 (defmethod transform java.net.URL [url dispatcher]
     (transform (.toURI url) dispatcher))

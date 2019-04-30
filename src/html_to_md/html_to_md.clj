@@ -165,6 +165,7 @@
 
 
 (def markdown-dispatcher
+    "A despatcher for transforming (X)HTML into Markdown."
     {:a markdown-a
      :b markdown-strong
      :br markdown-br

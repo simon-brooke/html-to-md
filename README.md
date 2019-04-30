@@ -21,29 +21,29 @@ To use this library in your project, add the following leiningen dependency:
 
 To use it in your namespace, require:
 
-    [html-to-md/transformer :refer [transform process]]
-    [html-to-md/html-to-md :refer [markdown-dispatcher]]
+    [html-to-md.core :refer [html-to-md]]
+
+For default usage, that's all you need. To play more sophisticated tricks,
+consider:
+
+    [html-to-md.transformer :refer [transform process]]
+    [html-to-md.html-to-md :refer [markdown-dispatcher]]
 
 The intended usage is as follows:
 
 ```clojure
-(require '[html-to-md.transformer :refer [transform]])
-(require '[html-to-md.html-to-md :refer [markdown-dispatcher]])
+(require '[html-to-md.core :refer [html-to-md]])
 
-(transform URL markdown-dispatcher)
+(html-to-md url output-file)
 ```
 
-Where URL is any URL that references an HTML, SGML, XHTML or XML document.
-However, my fancy multi-method doesn't work yet and may well be the wrong
-approach, so for now use
+This will read (X)HTML from `url` and write Markdown to `output-file`. If
+`output-file` is not supplied, it will return the markdown as a string:
 
 ```clojure
+(require '[html-to-md.core :refer [html-to-md]])
 
-(require '[html-to-md.transformer :refer [process]])
-(require '[html-to-md.html-to-md :refer [markdown-dispatcher]])
-(require '[net.cgrand.enlive-html :as html])
-
-(process (html/html-resource URL) markdown-dispatcher)
+(def md (html-to-md url))
 ```
 
 ## Extending the transformer
@@ -66,3 +66,4 @@ Copyright © 2019 Simon Brooke <simon@journeyman.cc>
 
 Distributed under the Eclipse Public License either version 1.0 or (at
 your option) any later version.
+
