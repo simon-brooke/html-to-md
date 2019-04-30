@@ -29,7 +29,7 @@
 
         (string? element) element
         (or (seq? element) (vector? element))
-        (map #(process % dispatcher) element)))
+        (doall (map #(process % dispatcher) element))))
 
 (defn- transformer-dispatch
     [a _]

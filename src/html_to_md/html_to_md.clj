@@ -7,15 +7,18 @@
 (defn markdown-a
     "Process the anchor element `e` into markdown, using dispatcher `d`."
     [e d]
-    (apply
-        str
-        (flatten
-            (list
-                "["
-                (map #(process % d) (:content e))
-                "]("
-                (-> e :attrs :href)
-                ")"))))
+    (str
+        "["
+        (s/trim (apply str (process (:content e) d)))
+        "]("
+        (-> e :attrs :href)
+        ")"))
+
+(defn markdown-br
+    "Process the line-break element `e`, so beloved of tag-soupers, into
+    markdown"
+    [e d]
+    "\n\n")
 
 (defn markdown-code
     "Process the code or samp `e` into markdown, using dispatcher `d`."
@@ -51,15 +54,12 @@
     "Process the header element `e` into markdown, with level `level`,
     using dispatcher `d`."
     [e d level]
-    (apply
-        str
-        (flatten
-            (list
-                "\n"
-            (take level (repeat "#"))
-                " "
-            (map #(process % d) (:content e))
-                "\n"))))
+    (str
+        "\n"
+        (apply str (take level (repeat "#")))
+        " "
+        (s/trim (apply str (process (:content e) d)))
+        "\n"))
 
 (defn markdown-h1
     "Process the header element `e` into markdown, with level 1, using
@@ -105,7 +105,7 @@
 (defn markdown-img
     "Process this image element `e` into markdown, using dispatcher `d`."
     [e d]
-    (str "![" (-> e :attrs :alt) "](" (-> e :attrs :src) ")"))
+    (str "![image: " (-> e :attrs :alt) "](" (-> e :attrs :src) ")"))
 
 (defn markdown-ol
     "Process this ordered list element `e` into markdown, using dispatcher
@@ -120,9 +120,14 @@
                             str
                             (flatten
                                 (list "\n" (inc %2) ". " (process %1 d))))
-                       (:content e)
+                       (html/select e [:li])
                        (range))))
         "\n\n"))
+
+(defn markdown-omit
+    "Don't process the element `e` into markdown, but return `nil`."
+    [e d]
+    nil)
 
 (defn markdown-pre
     "Process the preformatted emphasis element `e` into markdown, using
@@ -155,13 +160,14 @@
                             str
                             (flatten
                                 (list "\n* " (process % d))))
-                       (:content e))))
+                       (html/select e [:li]))))
         "\n\n"))
 
 
 (def markdown-dispatcher
     {:a markdown-a
      :b markdown-strong
+     :br markdown-br
      :code markdown-code
      :body markdown-default
      :div markdown-div
@@ -179,8 +185,10 @@
      :p markdown-div
      :pre markdown-pre
      :samp markdown-code
+     :script markdown-omit
      :span markdown-default
      :strong markdown-strong
+     :style markdown-omit
      :ul markdown-ul
      })
 
