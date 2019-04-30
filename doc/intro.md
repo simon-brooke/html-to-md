@@ -1,9 +1,5 @@
 # Introduction to html-to-md
 
-TODO: write [great documentation](http://jacobian.org/writing/what-to-write/)
-
-## Introduction
-
 The itch I'm trying to scratch at present is to transform
 [Blogger.com](http://www.blogger.com)'s dreadful tag-soup markup into markdown;
 but my architecture for doing this is to build a completely general [HT|SG|X]ML
@@ -44,6 +40,21 @@ This will read (X)HTML from `url` and write Markdown to `output-file`. If
 
 (def md (html-to-md url))
 ```
+
+If you are specifically scraping [blogger.com](https://www.blogger.com/")
+pages, you may *try* the following recipe:
+
+```clojure
+(require '[html-to-md.core :refer [blogger-to-md]])
+
+(blogger-to-md url output-file)
+```
+
+It works for my blogger pages. However, I'm not sure to what extent the
+skinning of blogger pages is pure CSS (in which case my recipe should work
+for yours) and to what extent it's HTML templating (in which case it
+probably won't). Results not guaranteed, if it doesn't work you get to
+keep all the pieces.
 
 ## Extending the transformer
 

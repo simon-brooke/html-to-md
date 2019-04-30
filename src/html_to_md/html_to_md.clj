@@ -18,7 +18,7 @@
     "Process the line-break element `e`, so beloved of tag-soupers, into
     markdown"
     [e d]
-    "\n\n")
+    "\n")
 
 (defn markdown-code
     "Process the code or samp `e` into markdown, using dispatcher `d`."

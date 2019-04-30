@@ -1,6 +1,7 @@
 # html-to-md
 
-A Clojure library designed to convert (Enlivened) HTML to markdown; but, more
+A Clojure library designed to convert
+([Enlive](https://github.com/cgrand/enlive)ned) HTML to markdown; but, more
 generally, a framework for [HT|SG|X]ML transformation.
 
 ## Introduction
@@ -45,6 +46,21 @@ This will read (X)HTML from `url` and write Markdown to `output-file`. If
 
 (def md (html-to-md url))
 ```
+
+If you are specifically scraping [blogger.com](https://www.blogger.com/")
+pages, you may *try* the following recipe:
+
+```clojure
+(require '[html-to-md.core :refer [blogger-to-md]])
+
+(blogger-to-md url output-file)
+```
+
+It works for my blogger pages. However, I'm not sure to what extent the
+skinning of blogger pages is pure CSS (in which case my recipe should work
+for yours) and to what extent it's HTML templating (in which case it
+probably won't). Results not guaranteed, if it doesn't work you get to
+keep all the pieces.
 
 ## Extending the transformer
 
