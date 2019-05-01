@@ -1,4 +1,5 @@
 (ns html-to-md.core
+    "Top level functions intended for very simple use."
     (:require [html-to-md.transformer :refer [transform process]]
               [html-to-md.html-to-md :refer [markdown-dispatcher]]
               [html-to-md.blogger-to-md :refer [blogger-dispatcher]]))

@@ -1,4 +1,6 @@
 (ns html-to-md.blogger-to-md
+    "Convert blogger posts to Markdown format, omitting all the Blogger chrome
+    and navigation."
     (:require [clojure.string :as s]
               [html-to-md.html-to-md :refer [markdown-dispatcher markdown-header]]
               [html-to-md.transformer :refer [process]]
@@ -34,7 +36,7 @@
 
 
 (def blogger-dispatcher
-    "Adaptation of `markdown-dispatcher`, q.v., with the `:table`, `:h3` and
+    "Adaptation of `markdown-dispatcher`, q.v., with the `:table` and
     `:html` dispatches overridden."
     (assoc markdown-dispatcher
         :html blogger-scraper
