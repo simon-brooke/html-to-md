@@ -1,4 +1,7 @@
 (ns html-to-md.html-to-md
+    "Transform general HTML to
+    [Markdown](https://daringfireball.net/projects/markdown/), as faithfully
+    as is reasonably possible."
     (:require
         [clojure.string :as s]
         [net.cgrand.enlive-html :as html]
@@ -165,7 +168,7 @@
 
 
 (def markdown-dispatcher
-    "A despatcher for transforming (X)HTML into Markdown."
+    "A dispatcher for transforming (X)HTML into Markdown."
     {:a markdown-a
      :b markdown-strong
      :br markdown-br
