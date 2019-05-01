@@ -1,4 +1,4 @@
-(defproject html-to-md "0.2.0"
+(defproject html-to-md "0.3.0"
     :description "Convert (Enlivened) HTML to markdown; but, more generally, a framework for [HT|SG|X]ML transformation."
     :url "https://github.com/simon-brooke/html-to-md"
     :license {:name "Eclipse Public License"
