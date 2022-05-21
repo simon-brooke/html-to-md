@@ -93,6 +93,4 @@
         (if url (transform url dispatcher)
             ;; otherwise, if s is not a URL, consider it as an HTML fragment,
             ;; parse and process it
-            (process (tagsoup/parser (java.io.StringReader s)) dispatcher)
-            )))
-
+            (process (tagsoup/parser (java.io.StringReader. s)) dispatcher))))
