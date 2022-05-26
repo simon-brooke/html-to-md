@@ -7,7 +7,5 @@
 
 (deftest transform-payload
   (testing "String `obj` for: 3. A string representation of an (X)HTML fragment;"
-    (is (= "# This is a header"
-           (str/trim (-> "<h1>This is a header"
-                         (transform markdown-dispatcher)
-                         (first)))))))
+    (is (= '("\n# This is a header\n")
+           (transform "<h1>This is a header</h1>" markdown-dispatcher)))))
