@@ -1,6 +1,5 @@
 (ns html-to-md.transformer-test
   (:require
-   [clojure.string :as str]
    [clojure.test :as t :refer [deftest is testing]]
    [html-to-md.html-to-md :refer [markdown-dispatcher]]
    [html-to-md.transformer :refer [transform]]))
